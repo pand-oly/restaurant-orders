@@ -1,9 +1,9 @@
 import csv
-from typing import Dict, List
+from typing import Dict, List, Set
 from collections import Counter
 
 
-def read_csv(path_to_file: str):  # -> List[Dict]:
+def read_csv(path_to_file: str) -> List[Dict]:
     """Responsible for reading the csv file"""
     with open(path_to_file) as file:
         data = csv.DictReader(
@@ -37,6 +37,24 @@ def how_many_times__order_this_dish(
     return Counter(const)[dish]
 
 
+def dishes_were_not_ordered(name: str, orders: List[Dict]) -> Set:
+    """receive the parameters
+    * name type string - name of the customer you want to search for
+    * orders type list of dict - with restaurant order list
+
+    returns which dishes were not ordered by the customer"""
+    dishes = set()
+    orders_customer = list()
+
+    for order in orders:
+        dishes.add(order["pedido"])
+
+        if order["cliente"] == name:
+            orders_customer.append(order["pedido"])
+
+    return {dish for dish in dishes if dish not in orders_customer}
+
+
 def analyze_log(path_to_file: str):
     data = read_csv(path_to_file)
 
@@ -45,3 +63,5 @@ def analyze_log(path_to_file: str):
     arnaldo_order_hamburguer = how_many_times__order_this_dish(
         "hamburguer", "arnaldo", data
     )
+
+    dishes_joao_never_order = dishes_were_not_ordered("joao", data)
