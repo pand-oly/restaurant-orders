@@ -73,14 +73,28 @@ def search_day_not_attend(name: str, orders: List[Dict]) -> Set:
     return {day for day in days if day not in orders_customer}
 
 
-def analyze_log(path_to_file: str):
+def write_return(requirements: Dict) -> None:
+    string = ""
+    for value in requirements.values():
+        string += f"{value}\n"
+
+    with open("data/mkt_campaign.txt", "w") as file:
+        file.write(string)
+
+
+def analyze_log(path_to_file: str) -> None:
     data = read_csv(path_to_file)
 
     most_requested_by_maria = most_requested_dish("maria", data)
-
     arnaldo_order_hamburguer = how_many_times__order_this_dish(
         "hamburguer", "arnaldo", data
     )
-
     dishes_joao_never_order = dishes_were_not_ordered("joao", data)
     days_that_joao_never_went = search_day_not_attend("joao", data)
+
+    write_return({
+        1: most_requested_by_maria,
+        2: arnaldo_order_hamburguer,
+        3: dishes_joao_never_order,
+        4: days_that_joao_never_went,
+    })
