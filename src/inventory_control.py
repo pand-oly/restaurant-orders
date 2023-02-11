@@ -36,7 +36,9 @@ class InventoryControl:
             self.__orders.append(
                 {"customer": customer, "order": order, "day": day}
             )
-            self.__use_ingredients(order)
+            return self.__use_ingredients(order)
+
+        return False
 
     def get_quantities_to_buy(self):
         shopping_list = dict()
@@ -47,3 +49,11 @@ class InventoryControl:
                 shopping_list[key] = 50 - self.MINIMUM_INVENTORY[key]
 
         return shopping_list
+
+    def get_available_dishes(self):
+        menu_available = set()
+        for dish in self.INGREDIENTS:
+            if self.__search_contains_ingredient(dish):
+                menu_available.add(dish)
+
+        return menu_available
