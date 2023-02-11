@@ -11,7 +11,7 @@ def read_csv(path_to_file: str) -> List[Dict]:
                 data = csv.DictReader(
                     file,
                     delimiter=",",
-                    fieldnames=["cliente", "pedido", "dia"],
+                    fieldnames=["customer", "order", "day"],
                 )
                 return [product for product in data]
         except FileNotFoundError:
@@ -27,7 +27,7 @@ def most_requested_dish(name: str, orders: List[Dict]) -> int:
 
     looks and returns up a person's most ordered dish in an order list"""
 
-    const = [order["pedido"] for order in orders if order["cliente"] == name]
+    const = [order["order"] for order in orders if order["customer"] == name]
     return Counter(const).most_common(1)[0][0]
 
 
@@ -41,7 +41,7 @@ def how_many_times__order_this_dish(
 
     returns how many times the customer ordered the dish"""
 
-    const = [order["pedido"] for order in orders if order["cliente"] == name]
+    const = [order["order"] for order in orders if order["customer"] == name]
     return Counter(const)[dish]
 
 
@@ -55,10 +55,10 @@ def dishes_were_not_ordered(name: str, orders: List[Dict]) -> Set:
     orders_customer = list()
 
     for order in orders:
-        dishes.add(order["pedido"])
+        dishes.add(order["order"])
 
-        if order["cliente"] == name:
-            orders_customer.append(order["pedido"])
+        if order["customer"] == name:
+            orders_customer.append(order["order"])
 
     return {dish for dish in dishes if dish not in orders_customer}
 
@@ -73,10 +73,10 @@ def search_day_not_attend(name: str, orders: List[Dict]) -> Set:
     orders_customer = list()
 
     for order in orders:
-        days.add(order["dia"])
+        days.add(order["day"])
 
-        if order["cliente"] == name:
-            orders_customer.append(order["dia"])
+        if order["customer"] == name:
+            orders_customer.append(order["day"])
 
     return {day for day in days if day not in orders_customer}
 
