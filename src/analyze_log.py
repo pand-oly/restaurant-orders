@@ -14,8 +14,8 @@ def read_csv(path_to_file: str) -> List[Dict]:
 
 def most_requested_dish(name: str, orders: List[Dict]) -> int:
     """receive the parameters
-    * name type string - name of the customer you want to search for
-    * orders type list of dict - with restaurant order list
+      * name type string - name of the customer you want to search for
+      * orders type list of dict - with restaurant order list
 
     looks and returns up a person's most ordered dish in an order list"""
 
@@ -27,9 +27,9 @@ def how_many_times__order_this_dish(
     dish: str, name: str, orders: List[Dict]
 ) -> int:
     """takes 3 parameters:
-    * dish type string - dish name for search
-    * name type string - name of the customer you want to search for
-    * orders type list of dict - with restaurant order list
+      * dish type string - dish name for search
+      * name type string - name of the customer you want to search for
+      * orders type list of dict - with restaurant order list
 
     returns how many times the customer ordered the dish"""
 
@@ -39,8 +39,8 @@ def how_many_times__order_this_dish(
 
 def dishes_were_not_ordered(name: str, orders: List[Dict]) -> Set:
     """receive the parameters
-    * name type string - name of the customer you want to search for
-    * orders type list of dict - with restaurant order list
+      * name type string - name of the customer you want to search for
+      * orders type list of dict - with restaurant order list
 
     returns which dishes were not ordered by the customer"""
     dishes = set()
@@ -55,6 +55,24 @@ def dishes_were_not_ordered(name: str, orders: List[Dict]) -> Set:
     return {dish for dish in dishes if dish not in orders_customer}
 
 
+def search_day_not_attend(name: str, orders: List[Dict]) -> Set:
+    """receive the parameters
+      * name type string - name of the customer you want to search for
+      * orders type list of dict - with restaurant order list
+
+    returns the day that the customer did not go to the restaurant"""
+    days = set()
+    orders_customer = list()
+
+    for order in orders:
+        days.add(order["dia"])
+
+        if order["cliente"] == name:
+            orders_customer.append(order["dia"])
+
+    return {day for day in days if day not in orders_customer}
+
+
 def analyze_log(path_to_file: str):
     data = read_csv(path_to_file)
 
@@ -65,3 +83,4 @@ def analyze_log(path_to_file: str):
     )
 
     dishes_joao_never_order = dishes_were_not_ordered("joao", data)
+    days_that_joao_never_went = search_day_not_attend("joao", data)
