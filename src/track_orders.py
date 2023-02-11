@@ -9,15 +9,21 @@ from .analyze_log import (
 class TrackOrders:
     def __init__(self) -> None:
         self.__orders = list()
+        self.__length = 0
 
     # aqui deve expor a quantidade de estoque
     def __len__(self):
-        pass
+        return self.__length
 
     def add_new_order(self, customer, order, day):
-        self.__orders.append(
-            {"customer": customer, "order": order, "day": day}
-        )
+        if customer and order and day:
+            self.__orders.append(
+                {"customer": customer, "order": order, "day": day}
+            )
+            self.__length += 1
+            return 0
+
+        raise ValueError("no value can be None")
 
     def get_most_ordered_dish_per_customer(self, customer):
         return most_requested_dish(customer, self.__orders)
