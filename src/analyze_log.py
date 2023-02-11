@@ -5,11 +5,19 @@ from collections import Counter
 
 def read_csv(path_to_file: str) -> List[Dict]:
     """Responsible for reading the csv file"""
-    with open(path_to_file) as file:
-        data = csv.DictReader(
-            file, delimiter=",", fieldnames=["cliente", "pedido", "dia"]
-        )
-        return [product for product in data]
+    if path_to_file.endswith(".csv"):
+        try:
+            with open(path_to_file, "r") as file:
+                data = csv.DictReader(
+                    file,
+                    delimiter=",",
+                    fieldnames=["cliente", "pedido", "dia"],
+                )
+                return [product for product in data]
+        except FileNotFoundError:
+            raise FileNotFoundError(f"Arquivo inexistente: '{path_to_file}'")
+
+    raise FileNotFoundError(f"Extensão inválida: '{path_to_file}'")
 
 
 def most_requested_dish(name: str, orders: List[Dict]) -> int:
@@ -92,9 +100,11 @@ def analyze_log(path_to_file: str) -> None:
     dishes_joao_never_order = dishes_were_not_ordered("joao", data)
     days_that_joao_never_went = search_day_not_attend("joao", data)
 
-    write_return({
-        1: most_requested_by_maria,
-        2: arnaldo_order_hamburguer,
-        3: dishes_joao_never_order,
-        4: days_that_joao_never_went,
-    })
+    write_return(
+        {
+            1: most_requested_by_maria,
+            2: arnaldo_order_hamburguer,
+            3: dishes_joao_never_order,
+            4: days_that_joao_never_went,
+        }
+    )
